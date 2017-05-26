@@ -13,6 +13,10 @@
 		);
 	};
 
+	var updateTodo = function($li){
+		$li.hasClass('completed') ? $li.removeClass('completed') : $li.addClass('completed');
+	};
+
 	//Input enter key event on .new-todo
 	var $newTodo = $('.new-todo');
 	$newTodo.keyup(function(e){
@@ -25,6 +29,12 @@
 				$newTodo.val('');
 			}
 		}
+	});
+
+	//Click completed event on .toggle
+	$('.todo-list').on('click', '.toggle', function(e){
+		var $li = $(e.target).parents('li');
+		updateTodo($li);
 	});
 
 })(window);
