@@ -1,6 +1,12 @@
 (function (window) {
 	'use strict';
 
+	var renewTodoCount = function(){
+		$('.todo-count').html('<strong>'
+		+ $('.todo-list').children('li:not(.completed)').length
+		+ '</strong> item left');
+	};
+
 	var addTodo = function(todo){
 		$('.todo-list').prepend(
 			'<li>\
@@ -11,10 +17,17 @@
 				</div>\
 			</li>'
 		);
+		renewTodoCount();
 	};
 
 	var updateTodo = function($li){
 		$li.hasClass('completed') ? $li.removeClass('completed') : $li.addClass('completed');
+		renewTodoCount();
+	};
+
+	var removeTodo = function($todo){
+		$todo.remove();
+		renewTodoCount();
 	};
 
 	//Input enter key event on .new-todo
@@ -30,10 +43,6 @@
 			}
 		}
 	});
-
-	var removeTodo = function($todo){
-		$todo.remove();
-	};
 
 	//Click completed event on .toggle
 	$('.todo-list').on('click', '.toggle', function(e){
