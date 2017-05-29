@@ -1,4 +1,4 @@
-package kr.or.connect.todo.presentation;
+package kr.or.connect.todo.api;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
