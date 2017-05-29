@@ -31,10 +31,28 @@
 		}
 	});
 
+	var removeTodo = function($todo){
+		$todo.remove();
+	};
+
 	//Click completed event on .toggle
 	$('.todo-list').on('click', '.toggle', function(e){
 		var $li = $(e.target).parents('li');
 		updateTodo($li);
+	});
+
+	//Click destroy event on .destroy
+	$('.todo-list').on('click', '.destroy', function(e){
+		removeTodo($(e.target).parents('li'));
+	});
+
+	//Click clear completed click event on .clear-completed
+	$('.clear-completed').click(function(e){
+		$('.todo-list').children().each(function(index, item){
+			if($(item).attr('class') === 'completed'){
+				removeTodo($(item));
+			}
+		});
 	});
 
 })(window);
