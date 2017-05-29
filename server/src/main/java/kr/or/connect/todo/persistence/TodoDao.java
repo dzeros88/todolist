@@ -49,7 +49,7 @@ public class TodoDao {
 	}
 
 	public int deleteById(Integer id) {
-			Map<String, ?> params = Collections.singletonMap("id", id);
-			return jdbc.update(TodoSqls.DELETE_BY_ID, params);
+		Map<String, ?> params = Collections.singletonMap("id", id);
+		return jdbc.update(TodoSqls.DELETE_BY_ID, params);
 	}
 }

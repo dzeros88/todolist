@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import kr.or.connect.todo.domain.Todo;
 import kr.or.connect.todo.service.TodoService;
 
-
 @RestController
 @RequestMapping("/api/todos")
 public class TodoController {

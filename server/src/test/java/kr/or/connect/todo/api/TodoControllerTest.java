@@ -26,7 +26,6 @@ import kr.or.connect.todo.TodoApplication;
 @ContextConfiguration(classes = TodoApplication.class)
 @SpringBootTest
 public class TodoControllerTest {
-
 	@Autowired
 	WebApplicationContext wac;
 	MockMvc mvc;
