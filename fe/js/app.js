@@ -7,28 +7,69 @@
 		+ '</strong> item left');
 	};
 
-	var addTodo = function(todo){
+	var addTodo = function(id, todo, completed){
+		var completedClass = completed === 1 ? ' class="completed"' : '';
+		var checked = completed === 1 ? ' checked' : '';
 		$('.todo-list').prepend(
-			'<li>\
+			'<li'+ completedClass +'>\
 				<div class="view">\
-					<input class="toggle" type="checkbox">\
+					<input class="todo-id" type="hidden" value='+ id +'>\
+					<input class="toggle" type="checkbox"'+ checked +'>\
 					<label>'+ todo +'</label>\
 					<button class="destroy"></button>\
 				</div>\
 			</li>'
 		);
-		renewTodoCount();
 	};
 
 	var updateTodo = function($li){
-		$li.hasClass('completed') ? $li.removeClass('completed') : $li.addClass('completed');
-		renewTodoCount();
+		var todoId = $li.find('.todo-id').val();
+		var completed;
+		$li.hasClass('completed') ? completed = 0 : completed = 1;
+		var todoData = JSON.stringify({
+			completed: completed
+		});
+		$.ajax({
+			url: '/api/todos/' + todoId,
+			type: 'PUT',
+			data: todoData,
+			contentType:"application/json"
+		})
+		.done(function() {
+			completed === 1 ? $li.addClass('completed') : $li.removeClass('completed');
+			renewTodoCount();
+		})
+		.fail(function(error){
+			console.log(error.responseJSON);
+			alert('Todo update를 실패했습니다.');
+		});
 	};
 
 	var removeTodo = function($todo){
-		$todo.remove();
-		renewTodoCount();
+		var todoId = $todo.find('.todo-id').val();
+		$.ajax({
+			url: '/api/todos/' + todoId,
+			type: 'DELETE'
+		})
+		.done(function() {
+			$todo.remove();
+			renewTodoCount();
+		})
+		.fail(function(error){
+			console.log(error.responseJSON)
+			alert('Todo 삭제를 실패했습니다.');
+		});
 	};
+
+	//Get todo list using api via ajax when document is ready
+	$(document).ready(function(){
+		$.getJSON( '/api/todos', function( data ) {
+			$.each(data, function(index, value) {
+				addTodo(value.id, value.todo, value.completed);
+			});
+			renewTodoCount();
+		});
+	});
 
 	//Input enter key event on .new-todo
 	var $newTodo = $('.new-todo');
@@ -36,9 +77,24 @@
 		//When enterKey
 		if (e.keyCode == 13){
 			var newTodo = $newTodo.val();
+			var todoData = JSON.stringify({
+				todo: newTodo
+			});
 			//Check input value isn't null
 			if(newTodo){
-				addTodo(newTodo);
+				$.ajax({
+					url: '/api/todos',
+					type: 'POST',
+					data: todoData,
+					contentType:"application/json"
+				})
+				.done(function(data) {
+					addTodo(data, newTodo);
+					renewTodoCount();
+				})
+				.fail(function(error){
+					alert(console.log(error.responseJSON));
+				});
 				$newTodo.val('');
 			}
 		}
@@ -63,7 +119,7 @@
 			}
 		});
 	});
-	
+
 	//Click all button event in .filters
 	$('a[href="#/"]').click(function(e){
 		e.preventDefault();
