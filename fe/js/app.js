@@ -63,5 +63,37 @@
 			}
 		});
 	});
+	
+	//Click all button event in .filters
+	$('a[href="#/"]').click(function(e){
+		e.preventDefault();
+		$('.todo-list').children().each(function(index, item){
+			$(item).show();
+		});
+	});
+
+	//Click active button event in .filters
+	$('a[href="#/active"]').click(function(e){
+		e.preventDefault();
+		$('.todo-list').children().each(function(index, item){
+			if($(item).attr('class') === 'completed'){
+				$(item).hide();
+			} else{
+				$(item).show();
+			}
+		});
+	});
+
+	//Click completed button event in .filters
+	$('a[href="#/completed"]').click(function(e){
+		e.preventDefault();
+		$('.todo-list').children().each(function(index, item){
+			if($(item).attr('class') !== 'completed'){
+				$(item).hide();
+			} else{
+				$(item).show();
+			}
+		});
+	});
 
 })(window);
